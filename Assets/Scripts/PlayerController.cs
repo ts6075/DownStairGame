@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    Rigidbody2D playerRigidbody2D;
-
+    /// <summary>
+    /// 角色物理框
+    /// </summary>
+    private Rigidbody2D playerRigidbody2D;
+    /// <summary>
+    /// 最大水平速度
+    /// </summary>
+    private float maxVelocityX = 10;
     /// <summary>
     /// 水平推力
     /// </summary>
     public float forceX;
-
     /// <summary>
     /// 垂直推力
     /// </summary>
@@ -25,11 +30,17 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            playerRigidbody2D.AddForce(new Vector2(forceX * -1, 0));
+            if (Mathf.Abs(playerRigidbody2D.velocity.x) < maxVelocityX)
+            {
+                playerRigidbody2D.AddForce(new Vector2(forceX * -1, 0));
+            }
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-            playerRigidbody2D.AddForce(new Vector2(forceX, 0));
+            if (Mathf.Abs(playerRigidbody2D.velocity.x) < maxVelocityX)
+            {
+                playerRigidbody2D.AddForce(new Vector2(forceX, 0));
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
