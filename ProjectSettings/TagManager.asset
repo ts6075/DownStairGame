@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: background Layer
+    uniqueID: 1847849761
+    locked: 0
+  - name: Stage Layer
+    uniqueID: 3095620769
+    locked: 0
+  - name: Player Layer
+    uniqueID: 3268225715
+    locked: 0
