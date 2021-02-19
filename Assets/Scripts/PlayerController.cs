@@ -20,9 +20,14 @@ public class PlayerController : MonoBehaviour
     /// 垂直推力
     /// </summary>
     public float forceY;
+    /// <summary>
+    /// 角色生命值
+    /// </summary>
+    public static int hp;
 
     void Start()
     {
+        hp = 10;
         playerRigidbody2D = GetComponent<Rigidbody2D>();
     }
 
