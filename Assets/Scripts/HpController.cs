@@ -18,11 +18,11 @@ public class HpController : MonoBehaviour
     {
         if (this.gameObject.CompareTag("DecreaseHp") && collision.gameObject.CompareTag("Player"))
         {
-            PlayerController.hp -= 1;
+            collision.gameObject.GetComponent<PlayerController>().GetDamage(1);
         }
         if (this.gameObject.CompareTag("DeadHp") && collision.gameObject.CompareTag("Player"))
         {
-            PlayerController.hp = 0;
+            collision.gameObject.GetComponent<PlayerController>().GetDamage(999);
         }
         Debug.Log(PlayerController.hp);
     }
@@ -31,11 +31,11 @@ public class HpController : MonoBehaviour
     {
         if (this.gameObject.CompareTag("DecreaseHp") && collision.gameObject.CompareTag("Player"))
         {
-            PlayerController.hp -= 1;
+            collision.gameObject.GetComponent<PlayerController>().GetDamage(1);
         }
         if (this.gameObject.CompareTag("DeadHp") && collision.gameObject.CompareTag("Player"))
         {
-            PlayerController.hp = 0;
+            collision.gameObject.GetComponent<PlayerController>().GetDamage(999);
         }
         Debug.Log(PlayerController.hp);
     }

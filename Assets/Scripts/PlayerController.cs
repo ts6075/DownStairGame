@@ -11,11 +11,11 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 最大水平速度
     /// </summary>
-    private float maxVelocityX = 3.0f;
+    private float maxVelocityX = 4.0f;
     /// <summary>
-    /// 水平推力
+    /// 最大垂直速度
     /// </summary>
-    public float forceX;
+    private float maxVelocityY = 10.0f;
     /// <summary>
     /// 垂直推力
     /// </summary>
@@ -33,35 +33,57 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        // 水平移動
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             playerRigidbody2D.velocity = new Vector2(maxVelocityX * -1, playerRigidbody2D.velocity.y);
-            //if (Mathf.Abs(playerRigidbody2D.velocity.x) < maxVelocityX)
-            //{
-            //    playerRigidbody2D.AddForce(new Vector2(forceX * -1, 0));
-            //}
+            transform.rotation = new Quaternion(0, 180, 0, 0);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             playerRigidbody2D.velocity = new Vector2(maxVelocityX, playerRigidbody2D.velocity.y);
-            //if (Mathf.Abs(playerRigidbody2D.velocity.x) < maxVelocityX)
-            //{
-            //    playerRigidbody2D.AddForce(new Vector2(forceX, 0));
-            //}
+            transform.rotation = new Quaternion(0, 0, 0, 0);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        // 跳躍
+        if (Input.GetKeyDown(KeyCode.Space) && playerRigidbody2D.velocity.y == 0)
         {
+            //playerRigidbody2D.velocity = new Vector2(playerRigidbody2D.velocity.x, 5);
             playerRigidbody2D.AddForce(new Vector2(0, forceY));
         }
+        else if (Mathf.Abs(playerRigidbody2D.velocity.y) > maxVelocityY)
+        {
+            playerRigidbody2D.velocity = new Vector2(playerRigidbody2D.velocity.x, maxVelocityY * -1);
+        }
+    }
 
-        if (playerRigidbody2D.velocity.x < 0)
+    /// <summary>
+    /// 當角色受到傷害
+    /// </summary>
+    public void GetDamage(int damage)
+    {
+        hp -= damage;
+        if (hp < 0)
         {
-            gameObject.transform.rotation = new Quaternion(0, 180, 0, 0);
+            hp = 0;
         }
-        else
-        {
-            gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
-        }
+
+        GameManageController.Instance.RenderHealthUI();
+
+        StartCoroutine(nameof(GetInvisible));
+    }
+
+    /// <summary>
+    /// 進入無敵狀態
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator GetInvisible()
+    {
+        BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
+        boxCollider.enabled = false;
+
+        yield return new WaitForSeconds(0.3f);
+
+        boxCollider.enabled = true;
     }
 }
