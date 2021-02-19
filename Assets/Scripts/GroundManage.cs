@@ -20,11 +20,11 @@ public class GroundManage : MonoBehaviour
     /// <summary>
     /// 最少剩餘平台數量
     /// </summary>
-    readonly int minRemainGroundCnt = 3;
+    readonly int minRemainGroundCnt = 10;
     /// <summary>
     /// 最多平台數量
     /// </summary>
-    readonly int maxGroundCnt = 7;
+    readonly int maxGroundCnt = 20;
     /// <summary>
     /// 目前平台清單
     /// </summary>
