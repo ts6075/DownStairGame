@@ -49,7 +49,7 @@ public class GroundManage : MonoBehaviour
 
     void Update()
     {
-        ReflashGround();
+        RenderGround();
     }
 
     /// <summary>
@@ -82,9 +82,9 @@ public class GroundManage : MonoBehaviour
     }
 
     /// <summary>
-    /// 刷新平台數量
+    /// 重繪平台數量
     /// </summary>
-    private void ReflashGround()
+    private void RenderGround()
     {
         int remainGroundCnt = grounds.Where(e => e.position.y < player.position.y).Count(); // 目前剩餘平台數量
         // 若角色下方剩餘平台數量過少,則新增平台
