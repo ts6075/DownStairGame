@@ -47,15 +47,18 @@ public class PlayerController : MonoBehaviour
         {
             playerRigidbody2D.velocity = new Vector2(maxVelocityX * -1, playerRigidbody2D.velocity.y);
             transform.rotation = new Quaternion(0, 180, 0, 0);
+            gameObject.GetComponent<Animator>().Play("SkeletonWalkAnimation");
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             playerRigidbody2D.velocity = new Vector2(maxVelocityX, playerRigidbody2D.velocity.y);
             transform.rotation = new Quaternion(0, 0, 0, 0);
+            gameObject.GetComponent<Animator>().Play("SkeletonWalkAnimation");
         }
         else
         {
             playerRigidbody2D.velocity *= new Vector2(0, 1);
+            gameObject.GetComponent<Animator>().Play("SkeletonStandAnimation");
         }
 
         // 垂直移動
