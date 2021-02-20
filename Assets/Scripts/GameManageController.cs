@@ -22,6 +22,14 @@ public class GameManageController : MonoBehaviour
     /// </summary>
     public GameObject mainCanvas;
     /// <summary>
+    /// 記分板
+    /// </summary>
+    public Text scorebord;
+    /// <summary>
+    /// 攝影機
+    /// </summary>
+    public Transform mainCamera;
+    /// <summary>
     /// 角色
     /// </summary>
     public GameObject player;
@@ -45,6 +53,10 @@ public class GameManageController : MonoBehaviour
 
     void Update()
     {
+        if (hps.Count > 0)
+        {
+            RenderScorebord();
+        }
     }
 
     /// <summary>
@@ -92,6 +104,16 @@ public class GameManageController : MonoBehaviour
         {
             DecreaseHealthPoint();
         }
+    }
+
+    /// <summary>
+    /// 繪製記分板
+    /// </summary>
+    private void RenderScorebord()
+    {
+        float mainCameraDownHeight = mainCamera.position.y;
+        int downFloor = (int)mainCameraDownHeight / -7;
+        scorebord.text = $"地下{downFloor:0000}層";
     }
 
     /// <summary>
