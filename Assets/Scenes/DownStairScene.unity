@@ -743,7 +743,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f769e75cde2bf94b9561857be741e39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  downSpeed: 3
+  downSpeed: 2
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -1320,7 +1320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6154ed7b9b9d70c4d9ba31ae440aa34c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacing: 1.5
+  spacing: 0.75
   mainCamera: {fileID: 519420032}
 --- !u!4 &1805282741
 Transform:

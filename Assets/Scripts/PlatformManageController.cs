@@ -6,6 +6,28 @@ using UnityEngine;
 public class PlatformManageController : MonoBehaviour
 {
     /// <summary>
+    /// 平台模型
+    /// </summary>
+    private class PlatformModel
+    {
+        /// <summary>
+        /// Resources名稱
+        /// </summary>
+        public string ResourcesName { get; set; }
+        /// <summary>
+        /// 出現機率權重
+        /// </summary>
+        public float Weight { get; set; }
+    }
+    /// <summary>
+    /// 平台清單
+    /// </summary>
+    private readonly List<PlatformModel> platformList = new List<PlatformModel>()
+    {
+        new PlatformModel{ ResourcesName = "platform_marble", Weight = 90 },
+        new PlatformModel{ ResourcesName = "platform_jelly", Weight = 10  }
+    };
+    /// <summary>
     /// 左邊界
     /// </summary>
     private readonly float leftBorder = -3;
@@ -20,15 +42,15 @@ public class PlatformManageController : MonoBehaviour
     /// <summary>
     /// 最少剩餘平台數量
     /// </summary>
-    private readonly int minRemainGroundCnt = 10;
+    private readonly int minRemainPlatformCnt = 10;
     /// <summary>
     /// 最多平台數量
     /// </summary>
-    private readonly int maxGroundCnt = 20;
+    private readonly int maxPlatformCnt = 20;
     /// <summary>
     /// 目前平台清單
     /// </summary>
-    private List<Transform> grounds;
+    private List<Transform> platforms;
     /// <summary>
     /// 平台垂直間格
     /// </summary>
@@ -40,33 +62,54 @@ public class PlatformManageController : MonoBehaviour
 
     void Start()
     {
-        grounds = new List<Transform>();
-        for (int i = 0; i < maxGroundCnt; i++)
+        platforms = new List<Transform>();
+        for (int i = 0; i < maxPlatformCnt; i++)
         {
-            SpawnGround();
+            SpawnPlatform();
         }
     }
 
     void Update()
     {
-        RenderGround();
+        RenderPlatform();
+    }
+
+    /// <summary>
+    /// 取得新產生的平台ResourcesName
+    /// </summary>
+    /// <returns></returns>
+    private string GetNewPlatformResourcesName()
+    {
+        List<PlatformModel> cloneList = new List<PlatformModel>(platformList);
+        List<string> randomBox = new List<string>();
+        int totalWeights = 0;
+        foreach(var item in cloneList)
+        {
+            for(var i = 0; i < item.Weight; i++)
+            {
+                randomBox.Add(item.ResourcesName);
+                totalWeights++;
+            }
+        }
+        int randomIndex = Random.Range(0, totalWeights);
+        return randomBox[randomIndex];
     }
 
     /// <summary>
     /// 取得新產生的平台座標
     /// </summary>
     /// <returns></returns>
-    private Vector3 GetNewGroundPosition()
+    private Vector3 GetNewPlatformPosition()
     {
         Vector3 vector3 = new Vector3(0, 0, 0);
-        if (grounds.Count == 0)
+        if (platforms.Count == 0)
         {
             vector3 = initPosition;
         }
         else
         {
             vector3.x = Random.Range(leftBorder, rightBorder);
-            vector3.y = grounds.Last().transform.position.y - spacing;
+            vector3.y = platforms.Last().transform.position.y - spacing;
         }
         return vector3;
     }
@@ -74,30 +117,31 @@ public class PlatformManageController : MonoBehaviour
     /// <summary>
     /// 產生新平台
     /// </summary>
-    private void SpawnGround()
+    private void SpawnPlatform()
     {
-        GameObject newGround = Instantiate(Resources.Load<GameObject>("platform_marble"));
-        newGround.transform.position = GetNewGroundPosition();
-        grounds.Add(newGround.transform);
+        string resourcesName = GetNewPlatformResourcesName();
+        GameObject newPlatform = Instantiate(Resources.Load<GameObject>(resourcesName));
+        newPlatform.transform.position = GetNewPlatformPosition();
+        platforms.Add(newPlatform.transform);
     }
 
     /// <summary>
     /// 重繪平台數量
     /// </summary>
-    private void RenderGround()
+    private void RenderPlatform()
     {
-        int remainGroundCnt = grounds.Where(e => e.position.y < mainCamera.position.y).Count(); // 目前剩餘平台數量
+        int remainPlatformCnt = platforms.Where(e => e.position.y < mainCamera.position.y).Count(); // 目前剩餘平台數量
         // 若畫面中心下方剩餘平台數量過少,則新增平台
-        if (remainGroundCnt < minRemainGroundCnt)
+        if (remainPlatformCnt < minRemainPlatformCnt)
         {
-            SpawnGround();
+            SpawnPlatform();
         }
 
         // 若總平台數量過多,則摧毀平台
-        if (grounds.Count > maxGroundCnt)
+        if (platforms.Count > maxPlatformCnt)
         {
-            Destroy(grounds[0].gameObject);
-            grounds.RemoveAt(0);
+            Destroy(platforms[0].gameObject);
+            platforms.RemoveAt(0);
         }
     }
 }
