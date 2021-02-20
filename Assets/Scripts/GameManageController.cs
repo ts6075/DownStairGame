@@ -20,7 +20,7 @@ public class GameManageController : MonoBehaviour
     /// <summary>
     /// 主UI畫布
     /// </summary>
-    public GameObject uiCanvas;
+    public GameObject mainCanvas;
     /// <summary>
     /// 角色
     /// </summary>
@@ -38,23 +38,13 @@ public class GameManageController : MonoBehaviour
         }
 
         hps = new List<GameObject>();
-        uiCanvas = GameObject.Find("Canvas");
         restartBtn.gameObject.SetActive(false);
-
-        for (int i = 0; i < PlayerController.hp; i++)
-        {
-            AddHealthPoint();
-        }
+        PlayerController playerInstance = player.GetComponent<PlayerController>();
+        RenderHealthUI(playerInstance.hp, playerInstance.maxHp);
     }
 
     void Update()
     {
-        if (PlayerController.hp <= 0)
-        {
-            player.SetActive(false);
-            restartBtn.gameObject.SetActive(true);
-        }
-        RenderHealthUI();
     }
 
     /// <summary>
@@ -66,38 +56,50 @@ public class GameManageController : MonoBehaviour
     }
 
     /// <summary>
-    /// 增加血量
+    /// 增加生命值
     /// </summary>
-    private void AddHealthPoint()
+    public void AddHealthPoint()
     {
         GameObject hp = Instantiate(Resources.Load<GameObject>("heartImg"));
-        hp.transform.SetParent(uiCanvas.transform.Find("healthPoints"));
+        hp.transform.SetParent(mainCanvas.transform.Find("healthPoints"));
         hps.Add(hp);
     }
 
     /// <summary>
-    /// 減少血量
+    /// 減少生命值
     /// </summary>
     private void DecreaseHealthPoint()
     {
-        Destroy(hps.Last());
-        hps.RemoveAt(hps.Count - 1);
+        if (hps.Count > 0)
+        {
+            Destroy(hps.Last());
+            hps.RemoveAt(hps.Count - 1);
+        }
     }
 
     /// <summary>
-    /// 繪製角色血量UI
+    /// 繪製角色生命值UI
     /// </summary>
-    public void RenderHealthUI()
+    /// <param name="remainHp">剩餘生命值</param>
+    /// <param name="maxHp">最大生命值</param>
+    public void RenderHealthUI(int remainHp, int maxHp)
     {
-        // 根據角色血量繪製血量UI
-        int healthPoint = PlayerController.hp;
-        if (hps.Count < healthPoint)
+        for (int i = hps.Count; i < remainHp && i < maxHp; i++)
         {
             AddHealthPoint();
         }
-        else if (hps.Count > healthPoint)
+        for (int i = hps.Count; i > remainHp && i >= 0; i--)
         {
             DecreaseHealthPoint();
         }
+    }
+
+    /// <summary>
+    /// 遊戲結束
+    /// </summary>
+    public void GameOver()
+    {
+        player.SetActive(false);
+        restartBtn.gameObject.SetActive(true);
     }
 }

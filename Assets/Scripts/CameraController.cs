@@ -7,16 +7,6 @@ public class CameraController : MonoBehaviour
     /// </summary>
     public float downSpeed;
 
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-
     private void FixedUpdate()
     {
         transform.Translate(0, -downSpeed * Time.deltaTime, 0);

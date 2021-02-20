@@ -3,28 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class GroundManage : MonoBehaviour
+public class PlatformManageController : MonoBehaviour
 {
     /// <summary>
     /// 左邊界
     /// </summary>
-    readonly float leftBorder = -3;
+    private readonly float leftBorder = -3;
     /// <summary>
     /// 右邊界
     /// </summary>
-    readonly float rightBorder = 3;
+    private readonly float rightBorder = 3;
     /// <summary>
     /// 起始生成位置
     /// </summary>
-    readonly Vector3 initPosition = new Vector3(0, 0, 0);
+    private readonly Vector3 initPosition = new Vector3(0, 0, 0);
     /// <summary>
     /// 最少剩餘平台數量
     /// </summary>
-    readonly int minRemainGroundCnt = 10;
+    private readonly int minRemainGroundCnt = 10;
     /// <summary>
     /// 最多平台數量
     /// </summary>
-    readonly int maxGroundCnt = 20;
+    private readonly int maxGroundCnt = 20;
     /// <summary>
     /// 目前平台清單
     /// </summary>
@@ -34,9 +34,9 @@ public class GroundManage : MonoBehaviour
     /// </summary>
     public float spacing;
     /// <summary>
-    /// 角色
+    /// 攝影機
     /// </summary>
-    public Transform player;
+    public Transform mainCamera;
 
     void Start()
     {
@@ -86,8 +86,8 @@ public class GroundManage : MonoBehaviour
     /// </summary>
     private void RenderGround()
     {
-        int remainGroundCnt = grounds.Where(e => e.position.y < player.position.y).Count(); // 目前剩餘平台數量
-        // 若角色下方剩餘平台數量過少,則新增平台
+        int remainGroundCnt = grounds.Where(e => e.position.y < mainCamera.position.y).Count(); // 目前剩餘平台數量
+        // 若畫面中心下方剩餘平台數量過少,則新增平台
         if (remainGroundCnt < minRemainGroundCnt)
         {
             SpawnGround();

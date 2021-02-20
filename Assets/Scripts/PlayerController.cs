@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -11,28 +10,38 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 最大水平速度
     /// </summary>
-    private float maxVelocityX = 4.0f;
+    private readonly float maxVelocityX = 4.0f;
+    /// <summary>
+    /// 最小垂直速度
+    /// </summary>
+    private readonly float minVelocityY = 3.0f;
     /// <summary>
     /// 最大垂直速度
     /// </summary>
-    private float maxVelocityY = 10.0f;
+    private readonly float maxVelocityY = 30.0f;
     /// <summary>
-    /// 垂直推力
+    /// 角色最大生命值
     /// </summary>
-    public float forceY;
+    public int maxHp;
     /// <summary>
     /// 角色生命值
     /// </summary>
-    public static int hp;
+    public int hp;
 
     void Start()
     {
-        hp = 10;
+        hp = maxHp;
         playerRigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
+        // 判斷生命值
+        if (hp <= 0)
+        {
+            GameManageController.Instance.GameOver();
+        }
+
         // 水平移動
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -44,22 +53,40 @@ public class PlayerController : MonoBehaviour
             playerRigidbody2D.velocity = new Vector2(maxVelocityX, playerRigidbody2D.velocity.y);
             transform.rotation = new Quaternion(0, 0, 0, 0);
         }
-
-        // 跳躍
-        if (Input.GetKeyDown(KeyCode.Space) && playerRigidbody2D.velocity.y == 0)
+        else
         {
-            //playerRigidbody2D.velocity = new Vector2(playerRigidbody2D.velocity.x, 5);
-            playerRigidbody2D.AddForce(new Vector2(0, forceY));
+            playerRigidbody2D.velocity *= new Vector2(0, 1);
         }
-        else if (Mathf.Abs(playerRigidbody2D.velocity.y) > maxVelocityY)
+
+        // 垂直移動
+        if (playerRigidbody2D.velocity.y > minVelocityY * -1 && playerRigidbody2D.velocity.y < 0)
+        {
+            playerRigidbody2D.velocity = new Vector2(playerRigidbody2D.velocity.x, minVelocityY * -1);
+        }
+        else if (playerRigidbody2D.velocity.y < maxVelocityY * -1)
         {
             playerRigidbody2D.velocity = new Vector2(playerRigidbody2D.velocity.x, maxVelocityY * -1);
         }
     }
 
     /// <summary>
+    /// 角色回復生命
+    /// </summary>
+    /// <param name="recoveryHp">回復生命值</param>
+    public void RecoveryHp(int recoveryHp)
+    {
+        hp += recoveryHp;
+        if (hp > maxHp)
+        {
+            hp = maxHp;
+        }
+        GameManageController.Instance.RenderHealthUI(hp, maxHp);
+    }
+
+    /// <summary>
     /// 當角色受到傷害
     /// </summary>
+    /// <param name="damage">傷害值</param>
     public void GetDamage(int damage)
     {
         hp -= damage;
@@ -67,8 +94,7 @@ public class PlayerController : MonoBehaviour
         {
             hp = 0;
         }
-
-        GameManageController.Instance.RenderHealthUI();
+        GameManageController.Instance.RenderHealthUI(hp, maxHp);
 
         StartCoroutine(nameof(GetInvisible));
     }

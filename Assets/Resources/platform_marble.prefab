@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7720664386189087835}
   - component: {fileID: 7720664386189087836}
   - component: {fileID: -4141061176899756021}
-  - component: {fileID: 8047784029907408728}
   - component: {fileID: 5195622191048772020}
+  - component: {fileID: -5088931086534030045}
   m_Layer: 0
   m_Name: platform_marble
   m_TagString: Untagged
@@ -110,18 +110,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 6.85, y: 0.5}
   m_EdgeRadius: 0
---- !u!114 &8047784029907408728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7720664386189087838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bffc6f6e8a3dbb4bbeb32a99405708f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!60 &5195622191048772020
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -131,7 +119,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 7720664386189087838}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: aec4991de89139343bed90f96afbc7d6, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -153,3 +141,16 @@ PolygonCollider2D:
       - {x: 3.61, y: -0.53}
       - {x: 3.61, y: 0.17}
       - {x: 3.45, y: 0.528}
+--- !u!114 &-5088931086534030045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7720664386189087838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f1a14532e01cd142b33b2d1b7cafa02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputHp: 1
